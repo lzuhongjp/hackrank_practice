@@ -1,0 +1,47 @@
+import sys
+import random
+
+#从输入中取样,输入格式为 192,123,0 120,11,1...
+samples = []
+for line in sys.stdin:
+    point = line.split(' ')
+    samples += random.sample(point,5)
+    
+#将每一个像素点进行格式化，去掉可能存在的'\n'或其他字符
+def str_format(str1):
+    nums_comma = '0123456789,' 
+    result = ''
+    for _ in str1:
+        if _ in nums_comma:
+            result += _
+    return result
+
+#将格式化后的字符转换为列表，元素为数字
+def str2list(str1):
+    format_str = str_format(str1)
+    split = format_str.split(',')
+    list1 = []
+    for _ in split:
+        list1.append(int(_))
+    return list1
+
+#最开始使用距离来做，发现效果不好，后面使用平均值来做。。。
+'''def count_distance(point1, point2):
+    diff = 0
+    assert len(point1) == len(point2)
+    for i in range(len(point1)):
+        diff += abs(point1[i] - point2[i])
+    return diff'''
+
+
+for index in range(len(samples)):
+    samples[index] = str2list(samples[index])
+    
+sum_mean = 0.0
+for pixel in samples:
+    sum_mean += (pixel[0] + pixel[1] + pixel[2])/3/len(samples)
+    
+if sum_mean >= 80:
+    print('day')
+else:
+    print('night')
